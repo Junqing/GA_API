@@ -5,7 +5,12 @@ from .main import app
 client = TestClient(app)
 
 
-def test_read_main():
+def test_fetch_fibonacci_indx():
     response = client.get("/fibonacci/5")
     assert response.status_code == 200
-    assert response.json() == {"data": 5}
+
+
+def test_create_blacklist():
+    response = client.post("/fibonacci/blacklist/5")
+    print(response.json())
+    assert response.status_code == 201

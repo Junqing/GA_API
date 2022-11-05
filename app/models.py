@@ -16,3 +16,18 @@ class Fibonacci():
             self.cache.append(fib_number)
 
         return self.cache[n]
+
+
+class Blacklist():
+    def __init__(self):
+        self.cache = []
+
+    def add(self, n):
+        if n not in self.cache:
+            self.cache.append(n)
+        return self.cache
+
+    def remove(self, n):
+        if n in self.cache:
+            self.cache.remove(n)
+        return self.cache
