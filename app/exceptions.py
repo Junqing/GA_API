@@ -7,10 +7,10 @@ class UndefinedException(HTTPException):
         self.detail = "Server error, investigation ongoing"
 
 
-class NegativeIntegerException(HTTPException):
-    def __init__(self):
+class ValueErrorException(HTTPException):
+    def __init__(self, detail):
         self.status_code = 422
-        self.detail = "Request input is not a positive integer larger than 0"
+        self.detail = detail
 
 
 class ValueTooLargeException(HTTPException):

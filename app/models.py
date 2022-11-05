@@ -1,7 +1,8 @@
 import sys
+from pydantic import BaseModel, Field
 
 
-class FibonacciByRecursion():
+class Fibonacci():
     # Find fibonacci by recursion
     def __init__(self):
         self.static_start = [0, 1, 1]
@@ -33,13 +34,13 @@ class FibonacciByRecursion():
         last2 = 1
         while i <= n+1:
             result = last1 + last2
-            if result >= sys.maxsize:
-                raise ValueError(
-                    f"Fibonacci value of input {n+1} is larger than max int")
             last2 = last1
             last1 = result
             looped_cache.append(result)
             i += 1
+        if result >= sys.maxsize:
+            raise ValueError(
+                f"Fibonacci value of input {n+1} is larger than max int")
         self.cache = self.static_start+looped_cache
         return result
 
@@ -78,3 +79,13 @@ class Blacklist():
         else:
             raise ValueError(f"Value {n} not found in blacklist")
         return self.cache
+
+
+class FibonacciOut(BaseModel):
+    n: int = Field(..., example=1)
+    value: int = Field(..., example=1)
+
+    class Config:
+        error_msg_templates = {
+            'value_error.any_str.max_length': 'max_length:{limit_value}',
+        }
