@@ -8,13 +8,13 @@ from fastapi_pagination import add_pagination, paginate
 from .pagination import Page
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s :: %(levelname)s :: %(message)s'
 )
 
 app = FastAPI()
 
-
+# Initialize fibonacci and blacklist
 fibonacci = Fibonacci()
 blacklist = Blacklist()
 
@@ -50,7 +50,8 @@ async def fibonacci_index(input: int):
 @app.get("/fibonacci/sequence/{input}", response_model=Page[FibonacciOut])
 async def fibonacci_sequence(input: int):
     # TODO current version is naive filter for blacklist,
-    # this can affect the output of total per page, should consider rearrange the pagination
+    # this can affect the output of total per page,
+    # should consider rearrange pagination
     try:
         data = []
         for n in range(input):
@@ -86,8 +87,6 @@ add_pagination(app)
 
 @app.post("/fibonacci/blacklist/{input}", status_code=201)
 async def add_blacklist(input: int):
-    # input may or may not be a fibonacci number
-    # checking any input might require unneccesary caching of fibonacci numbers
     if input < 0:
         raise ValueErrorException("Input is smaller than 0")
     try:
@@ -95,20 +94,22 @@ async def add_blacklist(input: int):
         logging.debug(blacklist.cache)
         return JSONResponse(
             status_code=status.HTTP_201_CREATED,
-            content={"data": "ok"}
+            content={"data": f"{input} is blacklisted"}
         )
     except Exception as e:
         logging.error(e)
         raise UndefinedException
 
 
-@app.delete("/fibonacci/blacklist/undo/{input}", status_code=200)
+@app.delete("/fibonacci/blacklist/undo/{input}", status_code=204)
 async def remove_blacklist(input: int):
     if input < 0:
         raise ValueErrorException("Input is smaller than 0")
     try:
         blacklist.remove(input)
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+        return None
+    except ValueError as ve:
+        raise ValueErrorException(ve.args)
     except Exception as e:
         logging.error(e)
         raise UndefinedException
