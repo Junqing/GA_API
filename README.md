@@ -56,3 +56,7 @@ Will run through the tests defined in app.test_main.py file
 - AWS components, helper functions
   - X ray for logging monitoring
   - Secrets manager
+
+## Current known issues
+
+- When the input for the index endpoint is above 500 and below 1000, the code have unstable behaviour. This needs further investigation.
