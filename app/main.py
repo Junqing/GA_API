@@ -8,7 +8,7 @@ from fastapi_pagination import add_pagination, paginate
 from .pagination import Page
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s :: %(levelname)s :: %(message)s'
 )
 
@@ -37,7 +37,7 @@ async def fibonacci_index(input: int):
             return FibonacciOut(n=input, value=value)
         except ValueError as ve:
             logging.error(ve)
-            raise ValueTooLargeException(ve.args)
+            raise ValueTooLargeException()
     except ValueError as ve:
         logging.error(ve)
         raise ValueErrorException(ve.args)
@@ -50,8 +50,10 @@ async def fibonacci_index(input: int):
 @app.get("/fibonacci/sequence/{input}", response_model=Page[FibonacciOut])
 async def fibonacci_sequence(input: int):
     # TODO current version is naive filter for blacklist,
-    # this can affect the output of total per page,
+    # this result in less page size,
     # should consider rearrange pagination
+    if input < 1:
+        raise ValueErrorException("Input must be larger than 0")
     try:
         data = []
         for n in range(input):
