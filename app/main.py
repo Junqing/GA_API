@@ -21,6 +21,24 @@ blacklist = Blacklist()
 
 @app.get("/fibonacci/{input}", response_model=FibonacciOut)
 async def fibonacci_index(input: int):
+    """Endpoint that returns the value
+    from the Fibonacci sequence for a given number.
+
+    Args:\n
+        input (int): Positive integer from 0 to ~900.
+        Input above 900 will cause error due to the number being too large
+
+    Raises:\n
+        ValueError: Error caused by input value
+        ValueTooLargeException: Value is too large
+        ValueErrorException:
+            Value can be blacklisted,
+            Value shouldn't be negative
+        UndefinedException: Uncaught errors, will need further investigation
+
+    Returns:\n
+        _type_: json
+    """
     try:
         value = fibonacci.recursive(input)
         logging.debug(fibonacci.cache)
@@ -49,6 +67,27 @@ async def fibonacci_index(input: int):
 
 @app.get("/fibonacci/sequence/{input}", response_model=Page[FibonacciOut])
 async def fibonacci_sequence(input: int):
+    """Endpoint that returns a list of numbers and the
+    corresponding values from the Fibonacci sequence
+    from 1 to N with support for pagination.
+    Page size should be parameterized with a default of 100.
+
+    Args:\n
+        input (int): input (int): Positive integer larger than 1.
+        Input too large will cause error due to the number being too large
+        (Only when pagination is pointing at those large numbers)
+
+    Raises:\n
+        ValueError: Error caused by input value
+        ValueTooLargeException: Value is too large
+        ValueErrorException:
+            Value can be blacklisted,
+            Value shouldn't be negative
+        UndefinedException: Uncaught errors, will need further investigation
+
+    Returns:\n
+        _type_: json
+    """
     # TODO current version is naive filter for blacklist,
     # this result in less page size,
     # should consider rearrange pagination
@@ -89,6 +128,21 @@ add_pagination(app)
 
 @app.post("/fibonacci/blacklist/{input}", status_code=201)
 async def add_blacklist(input: int):
+    """Endpoint to blacklist a number to permanently stop it
+    from being shown in Fibonacci results when requested.
+    The blacklisted numbers should persist in application state.
+
+    Args:\n
+        input (int): A positive integer wished to be blacklisted,
+        even if the number is not a fibonacci number it will still be accepted
+
+    Raises:\n
+        ValueErrorException: Input should not be smaller than 0
+        UndefinedException: Uncaught errors, will need further investigation
+
+    Returns:\n
+        _type_: json
+    """
     if input < 0:
         raise ValueErrorException("Input is smaller than 0")
     try:
@@ -105,6 +159,20 @@ async def add_blacklist(input: int):
 
 @app.delete("/fibonacci/blacklist/undo/{input}", status_code=204)
 async def remove_blacklist(input: int):
+    """Endpoint to remove a number from the blacklist.
+
+    Args:\n
+        input (int): A positive integer that should be removed from blacklist
+
+    Raises:\n
+        ValueErrorException: 
+            Value should not be smaller than 0
+            Not is not found in the blacklist
+        UndefinedException: Uncaught errors, will need further investigation
+
+    Returns:\n
+        _type_: none
+    """
     if input < 0:
         raise ValueErrorException("Input is smaller than 0")
     try:
