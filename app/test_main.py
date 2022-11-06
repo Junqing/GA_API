@@ -112,7 +112,7 @@ def test_fibonacci_sequence_pagination_error():
 
 def test_create_undo_blacklist():
     """
-    Test 
+    Test
     - fetching a valid fibonacci number,
     - blacklisting it
     - fetch with expected errors

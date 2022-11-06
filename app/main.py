@@ -165,7 +165,7 @@ async def remove_blacklist(input: int):
         input (int): A positive integer that should be removed from blacklist
 
     Raises:\n
-        ValueErrorException: 
+        ValueErrorException:
             Value should not be smaller than 0
             Not is not found in the blacklist
         UndefinedException: Uncaught errors, will need further investigation
