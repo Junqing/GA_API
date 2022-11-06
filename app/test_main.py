@@ -17,7 +17,7 @@ def test_fibonacci_index():
         test_input = random.randint(0, 10)
         response = client.get(f"/fibonacci/{test_input}")
         assert response.status_code == 200
-        assert response.json()['value'] == fibonacci_sequence[test_input]
+        assert response.json()["value"] == fibonacci_sequence[test_input]
 
 
 def test_fibonacci_index_error():
@@ -60,10 +60,10 @@ def test_fibonacci_sequence():
         f"/fibonacci/sequence/{input}?page={page}&size={size}")
     assert response.status_code == 200
     response_data = response.json()
-    assert response_data['page'] == page
-    assert response_data['size'] == size
-    assert [item['value']
-            for item in response_data['items']] == fibonacci_sequence
+    assert response_data["page"] == page
+    assert response_data["size"] == size
+    assert [item["value"]
+            for item in response_data["items"]] == fibonacci_sequence
 
 
 def test_fibonacci_sequence_pagination():
@@ -80,8 +80,8 @@ def test_fibonacci_sequence_pagination():
             f"/fibonacci/sequence/{input}?page={page_number}&size={size}")
         assert response.status_code == 200
         response_data = response.json()
-        assert response_data['page'] == page_number
-        response_fibonacci_sequence = response_data['items']
+        assert response_data["page"] == page_number
+        response_fibonacci_sequence = response_data["items"]
         if page_number < total_pages:
             assert len(response_fibonacci_sequence) == size
         else:
@@ -127,8 +127,8 @@ def test_create_undo_blacklist():
     fibonacci_sequence_response = client.get(
         f"fibonacci/sequence/{fibonacci_index+1}")
     assert fibonacci_sequence_response.status_code == 200
-    assert input in [item['value']
-                     for item in fibonacci_sequence_response.json()['items']]
+    assert input in [item["value"]
+                     for item in fibonacci_sequence_response.json()["items"]]
 
     # Now blacklisting this input
     blacklist_response = client.post(f"/fibonacci/blacklist/{input}")
@@ -140,9 +140,9 @@ def test_create_undo_blacklist():
     fibonacci_sequence_response = client.get(
         f"fibonacci/sequence/{fibonacci_index+1}")
     assert fibonacci_sequence_response.status_code == 200
-    assert input not in [item['value']
+    assert input not in [item["value"]
                          for item
-                         in fibonacci_sequence_response.json()['items']]
+                         in fibonacci_sequence_response.json()["items"]]
 
     # Now undo the blacklisted value
     undo_blacklist_response = client.delete(
@@ -153,5 +153,5 @@ def test_create_undo_blacklist():
     fibonacci_sequence_response = client.get(
         f"fibonacci/sequence/{fibonacci_index+1}")
     assert fibonacci_sequence_response.status_code == 200
-    assert input in [item['value']
-                     for item in fibonacci_sequence_response.json()['items']]
+    assert input in [item["value"]
+                     for item in fibonacci_sequence_response.json()["items"]]

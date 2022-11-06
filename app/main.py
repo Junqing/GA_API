@@ -37,7 +37,7 @@ async def fibonacci_index(input: int):
         UndefinedException: Uncaught errors, will need further investigation
 
     Returns:\n
-        _type_: json
+        _type_: application/json
     """
     try:
         value = fibonacci.recursive(input)
@@ -45,7 +45,7 @@ async def fibonacci_index(input: int):
         if value not in blacklist.cache:
             return FibonacciOut(n=input, value=value)
         else:
-            raise ValueError('Requested value is blacklisted')
+            raise ValueError("Requested value is blacklisted")
     except RecursionError as re:
         logging.error(re)
         try:
@@ -86,7 +86,7 @@ async def fibonacci_sequence(input: int):
         UndefinedException: Uncaught errors, will need further investigation
 
     Returns:\n
-        _type_: json
+        _type_: application/json
     """
     # TODO current version is naive filter for blacklist,
     # this result in less page size,
@@ -141,7 +141,7 @@ async def add_blacklist(input: int):
         UndefinedException: Uncaught errors, will need further investigation
 
     Returns:\n
-        _type_: json
+        _type_: application/json
     """
     if input < 0:
         raise ValueErrorException("Input is smaller than 0")

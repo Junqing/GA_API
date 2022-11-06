@@ -87,5 +87,5 @@ class FibonacciOut(BaseModel):
 
     class Config:
         error_msg_templates = {
-            'value_error.any_str.max_length': 'max_length:{limit_value}',
+            "value_error.any_str.max_length": "max_length:{limit_value}",
         }
