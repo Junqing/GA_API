@@ -46,6 +46,7 @@ Will run through the tests defined in app.test_main.py file
 - flake8 for linting
 - fastapi_pagination for pagination support
 - basic logging
+- added basic Github Actions for pytest, flake and docker build
 
 ## Features considered, not yet implemented
 
