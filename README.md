@@ -60,3 +60,9 @@ Will run through the tests defined in app.test_main.py file
 ## Current known issues
 
 - When the input for the index endpoint is above 500 and below 1000, the code have unstable behaviour. This needs further investigation.
+
+## Certain choices made:
+
+- When a positive integer that is not a fibonacci number is given to the blacklist, it still accepts the number and blacklists it. As initially in basic cases it is cheaper to add it rather than running tests against the fibonacci cache and eventually need to handle error situations.
+- An output model is created as FibonacciOut to follow the fastapi_pagination example. More learning is needed to utilize better output models.
+- Fibonacci generator has been done with both recursive and non-recursive methods.
