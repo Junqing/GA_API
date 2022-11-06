@@ -3,7 +3,6 @@ from pydantic import BaseModel, Field
 
 
 class Fibonacci():
-    # Find fibonacci by recursion
     def __init__(self):
         self.static_start = [0, 1, 1]
         self.cache = [0, 1, 1]
@@ -82,6 +81,8 @@ class Blacklist():
 
 
 class FibonacciOut(BaseModel):
+    # Output model for the endpoints,
+    # describing a fibonacci number with its n (index) and value
     n: int = Field(..., example=1)
     value: int = Field(..., example=1)
 
